@@ -1,5 +1,6 @@
 package com.otp.app.service;
 
+import org.springframework.http.ResponseEntity;
 
 public interface OtpService {
 	
@@ -16,4 +17,11 @@ public interface OtpService {
 	public  byte[] hexStr2Bytes(String hex);
 
 	public  byte[] hmac_sha(String crypto, byte[] keyBytes,byte[] text);
+	
+	public ResponseEntity<?> validateOtp(String string);
+
+	
+	
+	
+	
 }
