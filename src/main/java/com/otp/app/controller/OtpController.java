@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.otp.app.exception.OtpExceptionHandler;
 import com.otp.app.model.OtpModel;
+import com.otp.app.response.OtpErrorResponse;
 import com.otp.app.response.OtpResponse;
 import com.otp.app.service.OtpService;
 
@@ -38,11 +39,12 @@ public class OtpController {
 
 		try {
 			String otp = otpService.generateTOTP256(result, "30", "6");
-			OtpResponse otpRes =  OtpResponse.builder().statusCode("200").MessageTypeId("1").otp(otp).TraceId(Instant.now().toEpochMilli()).message("Otp Generated successfully").build();
+			OtpResponse otpRes =  OtpResponse.builder().statusCode("200").MessageTypeId("1").otp(otp).traceId(Instant.now().toEpochMilli()).message("Otp Generated successfully").build();
 			return new ResponseEntity<>(otpRes, HttpStatus.OK);
 
 		} catch (Exception e) {
-			throw new OtpExceptionHandler("otp not generated") ;
+			OtpErrorResponse res = OtpErrorResponse.builder().statusCode("400").messageTypeId("0").traceId(Instant.now().toEpochMilli()).message("something went wrong").build();
+			return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST) ;
 		}
 
 	}

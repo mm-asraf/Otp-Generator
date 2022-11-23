@@ -1,20 +1,15 @@
 package com.otp.app.response;
 
-import java.sql.Time;
-import java.time.Instant;
-
 import lombok.Builder;
 import lombok.Getter;
 
 @Builder
 @Getter
-public class OtpResponse {
+public class OtpErrorResponse {
 	
 	
 	private String statusCode;
-	private String otp;
+	private String messageTypeId;
 	private long traceId;
 	private String message;
-	private  String MessageTypeId;
-
 }
