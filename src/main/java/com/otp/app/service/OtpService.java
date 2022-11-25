@@ -23,10 +23,7 @@ public interface OtpService {
 
 	public ResponseEntity<?> validateOtp(String string);
 
-
-
-
-
+	
 
 
 }

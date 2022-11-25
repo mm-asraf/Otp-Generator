@@ -29,6 +29,9 @@ public class OtpController {
 	private OtpService otpService;
 	String result = "";
 
+	
+	
+	
 	@PostMapping("/login")
 	public ResponseEntity<?> generateOtp(@Valid @RequestBody OtpModel model) {
 
