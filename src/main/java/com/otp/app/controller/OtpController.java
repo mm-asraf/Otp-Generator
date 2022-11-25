@@ -23,8 +23,8 @@ import com.otp.app.service.OtpService;
 @RequestMapping("/api/v1/otp")
 public class OtpController {
 
-	
-	
+
+
 	@Autowired
 	private OtpService otpService;
 	String result = "";
@@ -33,14 +33,8 @@ public class OtpController {
 	public ResponseEntity<?> generateOtp(@Valid @RequestBody OtpModel model) {
 
 
-		byte[] secret =  ( model.getEmail() + LocalDateTime.now()).getBytes();
-
-		for (byte b : secret) {
-			result = result.concat("" + b);
-		}
-
 		try {
-			String otp = otpService.generateTOTP256(result, "30", "6");
+			String otp = otpService.generateTOTP256_1A(model);
 			OtpResponse otpRes =  OtpResponse.builder().statusCode("200").MessageTypeId("1").otp(otp).traceId(Instant.now().toEpochMilli()).message("Otp Generated successfully").build();
 			return new ResponseEntity<>(otpRes, HttpStatus.OK);
 

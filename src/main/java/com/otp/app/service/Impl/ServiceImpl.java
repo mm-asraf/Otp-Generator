@@ -21,13 +21,20 @@ import com.otp.app.service.OtpService;
 
 
 
+
+/**
+ * This services Implementatiion class contains different methods that   uses the JCE to provide the crypto algorithm.
+ * HMAC computes a Hashed Message Authentication Code with the crypto hash algorithm as a parameter.
+ * @param crypto: the crypto algorithm (HmacSHA1, HmacSHA256,HmacSHA512)                           
+ * @param keyBytes: the bytes to use for the HMAC key
+ * @param text: the message or text to be authenticated
+ */
+
 @Service
 public class ServiceImpl implements OtpService {
 
 
-	private static final int[] DIGITS_POWER
-	= {1,10,100,1000,10000,100000,1000000,10000000,100000000 };
-
+	private static final int[] DIGITS_POWER = {1,10,100,1000,10000,100000,1000000,10000000,100000000 };
 	private static LocalDateTime durationTime = null;
 	private String result = null;
 
@@ -35,13 +42,13 @@ public class ServiceImpl implements OtpService {
 
 	}
 
-	public  String generateTOTP256(String key,
-			String time,
-			String returnDigits){
-		return generateTOTP(key, time, returnDigits, "HmacSHA256");
-	}
-	
-	
+
+	/**
+	 * This method generates a TOTP value for the given
+	 * set of parameters.
+	 * @param object model: contains parameters that is  shared secret, HEX encoded,time and number of digits 
+	 * @param generateTOTP: it will perform some internal operation and then return six digit number;
+	 */
 	public String generateTOTP256_1A(OtpModel model) {
 		String res = "";
 		byte[] sec = (model.getEmail() +  LocalTime.now()).getBytes();
@@ -52,6 +59,15 @@ public class ServiceImpl implements OtpService {
 	}
 
 
+
+	/**
+	 * This method generates a TOTP value for the given set of parameters.
+	 * @param key: the shared secret, HEX encoded
+	 * @param time: a value that reflects a time
+	 * @param returnDigits: number of digits to return
+	 * @return: a numeric String in base 10 that includes
+	 *              {@link truncationDigits} digits
+	 */
 	public  String generateTOTP(String key,
 			String time,
 			String returnDigits,
@@ -85,10 +101,20 @@ public class ServiceImpl implements OtpService {
 		return result;
 	}
 
+
+
+	/**
+	 * This method converts a HEX string to Byte[]
+	 * @param hex: the HEX string
+	 * @return: a byte array
+	 */
 	public  byte[] hexStr2Bytes(String hex){
 
+		/**
+		 * Adding one byte to get the right conversion
+		 *  Values starting with "0" can be converted
+		 */	
 		byte[] bArray = new BigInteger("10" + hex,16).toByteArray();
-
 
 		byte[] ret = new byte[bArray.length - 1];
 		for (int i = 0; i < ret.length; i++)
@@ -97,8 +123,8 @@ public class ServiceImpl implements OtpService {
 	}
 
 
-	public  byte[] hmac_sha(String crypto, byte[] keyBytes,
-			byte[] text){
+	public  byte[] hmac_sha(String crypto, byte[] keyBytes,byte[] text){
+
 		try {
 			Mac hmac;
 			hmac = Mac.getInstance(crypto);
@@ -113,6 +139,7 @@ public class ServiceImpl implements OtpService {
 
 	@Override
 	public ResponseEntity<?> validateOtp(String otp) {
+
 		if(!otp.equals(result)) {
 			return new ResponseEntity<>("Otp didn't matched...",HttpStatus.GATEWAY_TIMEOUT);
 		}
@@ -130,11 +157,9 @@ public class ServiceImpl implements OtpService {
 
 	}
 
-	@Override
-	public String generateTOTP256(OtpModel model) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+
+
 
 
 }

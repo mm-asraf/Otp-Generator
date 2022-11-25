@@ -16,13 +16,13 @@ import lombok.Getter;
 @Getter
 @Entity
 public class OtpModel {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	
+
 
 	@Email
 	@Column(unique=true)
