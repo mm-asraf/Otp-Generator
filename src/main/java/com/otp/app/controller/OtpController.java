@@ -23,6 +23,8 @@ import com.otp.app.service.OtpService;
 @RequestMapping("/api/v1/otp")
 public class OtpController {
 
+	
+	
 	@Autowired
 	private OtpService otpService;
 	String result = "";

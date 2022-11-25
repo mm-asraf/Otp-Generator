@@ -1,11 +1,11 @@
 package com.otp.app.service.Impl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.otp.app.exception.OtpExceptionHandler;
-import com.otp.app.response.OtpResponse;
+import com.otp.app.model.OtpModel;
 import com.otp.app.response.OtpValidationSuccessResponseHandler;
 import com.otp.app.service.OtpService;
 
@@ -39,6 +39,16 @@ public class ServiceImpl implements OtpService {
 			String time,
 			String returnDigits){
 		return generateTOTP(key, time, returnDigits, "HmacSHA256");
+	}
+	
+	
+	public String generateTOTP256_1A(OtpModel model) {
+		String res = "";
+		byte[] sec = (model.getEmail() +  LocalTime.now()).getBytes();
+		for (byte b : sec) {
+			res = res.concat("" + b);
+		}
+		return generateTOTP(res, "30", "6", "HmacSHA256");
 	}
 
 
@@ -118,6 +128,12 @@ public class ServiceImpl implements OtpService {
 			return new ResponseEntity<>("otp code expired please resend...", HttpStatus.GATEWAY_TIMEOUT);
 		}
 
+	}
+
+	@Override
+	public String generateTOTP256(OtpModel model) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
